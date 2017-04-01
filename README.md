@@ -9,7 +9,7 @@ goal
   [] google map api
   [] leaflet
   [] openlayers
-layer ใน map
+* layer ใน map
   [] จำนวนผู้ป่วย (vill point)
   [] HI/CI (vill point)
   [] คุณภาพเครื่องพ่นสารเคมี (tam polygon)
