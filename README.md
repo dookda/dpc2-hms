@@ -4,7 +4,7 @@ this map was designed to support disease surveillance of DPC9
 
 ## web
 กรอบงานคร่าวๆ 
-- [ ] ##### design web ด้วย bootstrap 
+##### - [ ] design web ด้วย bootstrap 
 - [ ] ##### มี 3 menu คือ map chart report (คิดออกตอนนี้)
 
 เลือก map framework  
