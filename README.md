@@ -1,5 +1,5 @@
-# healthmap
-this map was designed to support disease surveillance of DPC2
+# Health Monitoring and Surveillance System (HMS)
+this map was designed to support health monitoring and surveillance system of DPC2
 
 
 ## web
