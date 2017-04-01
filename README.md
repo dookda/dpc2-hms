@@ -4,20 +4,20 @@ this map was designed to support disease surveillance of DPC9
 
 web
 
-[ ] design web ด้วย bootstrap 
-[ ] มี 3 menu คือ map chart report (คิดออกตอนนี้)
+- [x] design web ด้วย bootstrap 
+- [x]  มี 3 menu คือ map chart report (คิดออกตอนนี้)
 
 เลือก map framework  
-  [ ] google map api
-  [ ] leaflet
-  [ ] openlayers
+- [x] google map api
+- [x] leaflet
+- [x] openlayers
 
 layer ใน map
-  [ ] จำนวนผู้ป่วย (vill point)
-  [ ] HI/CI (vill point)
-  [ ] คุณภาพเครื่องพ่นสารเคมี (tam polygon)
-  [ ] จำนวน team ควบคุมโรค (tam polygon)
-  [ ] มาตรฐานการทำงานไข้เลือดออก (amp polygon)
+- [x] จำนวนผู้ป่วย (vill point)
+- [x] HI/CI (vill point)
+- [x] คุณภาพเครื่องพ่นสารเคมี (tam polygon)
+- [x] จำนวน team ควบคุมโรค (tam polygon)
+- [x] มาตรฐานการทำงานไข้เลือดออก (amp polygon)
  
  mobile
- * 
+ (เอาไว้ก่อน)
