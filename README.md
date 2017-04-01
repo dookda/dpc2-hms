@@ -9,7 +9,7 @@ this map was designed to support disease surveillance of DPC2
 
 เลือก map framework  
 - [ ] google map api
-- [ ] leaflet
+- [x] leaflet
 - [ ] openlayers
 
 layer ใน map
