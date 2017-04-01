@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Leaflet Users Map</title>
+    <title>Add Users Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Map showing users of the Leaflet mapping library" />
     <meta name="keywords" content="leaflet, users, map, javascript, cloudmade" />
@@ -239,7 +239,7 @@
       users = new L.MarkerClusterGroup({spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: true});
       newUser = new L.LayerGroup();
 
-	  
+
 		var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			maxZoom: 18,
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -263,7 +263,7 @@
         div.innerHTML = '<a class="leaflet-control-geoloc" href="#" onclick="geoLocate(); return false;" title="My location"></a>';
         return div;
       };
-      
+
       map.addControl(geolocControl);
       map.addControl(new L.Control.Scale());
 
