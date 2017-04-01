@@ -19,5 +19,5 @@ layer ใน map
 - [ ] จำนวน team ควบคุมโรค (tam polygon)
 - [ ] มาตรฐานการทำงานไข้เลือดออก (amp polygon)
  
- mobile
- (เอาไว้ก่อน)
+## mobile
+เดี๋ยวมาใส่
