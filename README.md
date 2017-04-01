@@ -1,10 +1,10 @@
 # healthmap
-this map was designed to support disease surveillance of DPC9
+this map was designed to support disease surveillance of DPC2
 
 
 ## web
 ###### กรอบงานคร่าวๆ 
-- [ ] design web ด้วย bootstrap 
+- [x] design web ด้วย bootstrap 
 - [ ] มี 3 menu คือ map chart report (คิดออกตอนนี้)
 
 เลือก map framework  
