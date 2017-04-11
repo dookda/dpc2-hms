@@ -304,7 +304,8 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
         };
     })
 
-.controller("chartController", function($scope, placeService, chartService, $timeout) {
+.controller("chartController", function($scope, $http, placeService, 
+    leafletData, chartService, $timeout) {
     $scope.title = 'chart';
 
     // select address
@@ -331,7 +332,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                 $scope.tambon = [];
                 $scope.village = [];
             })
-        
+
     };
 
     $scope.getTam = function() {
@@ -340,7 +341,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                 $scope.tambon = response.data;
                 $scope.village = [];
             })
-        
+
     };
 
     $scope.getVill = function() {
@@ -348,33 +349,30 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
             .then(function(response) {
                 $scope.village = response.data;
             })
-        
+
     };
 
+    // get chart
+    $scope.getChartProv = function() {
+        $timeout(function() { $scope.loadCaseProv('province', $scope.dat.prov); }, 400);
+        $scope.lineOptionA = {};
+        $scope.lineOptionT = {};        
+        $scope.lineOptionV = {};        
 
-    $scope.getChartProv = function(){
-      $timeout(function() {$scope.loadCaseProv('province', $scope.dat.prov);}, 400);
     };
-    $scope.getChartAmp = function(){
-      $timeout(function() {$scope.loadCaseProv('amphoe', $scope.dat.amp);}, 400);
+    $scope.getChartAmp = function() {
+        $timeout(function() { $scope.loadCaseProv('amphoe', $scope.dat.amp); }, 400);        
+        $scope.lineOptionT = {};        
+        $scope.lineOptionV = {};      
+
     };
-    $scope.getChartTam = function(){
-      $timeout(function() {$scope.loadCaseProv('tambon', $scope.dat.tam);}, 400);
+    $scope.getChartTam = function() {
+        $timeout(function() { $scope.loadCaseProv('tambon', $scope.dat.tam); }, 400);
+        $scope.lineOptionV = {};
+
     };
-    $scope.getChartVill = function(){
-      $timeout(function() {$scope.loadCaseProv('village', $scope.dat.vill);}, 400);
-    };
-
-
-
-
-
-    $scope.getVill2 = function() {
-/*        placeService.getVill($scope.dat.vill)
-            .then(function(response) {
-                $scope.village = response.data;
-            })*/
-        
+    $scope.getChartVill = function() {
+        $timeout(function() { $scope.loadCaseProv('village', $scope.dat.vill); }, 400); 
     };
 
 
@@ -382,13 +380,94 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
         location.reload();
     };
 
+    angular.extend($scope, {
+        japan: {
+            lat: 17,
+            lng: 100,
+            zoom: 7
+        },
+        defaults: {
+            scrollWheelZoom: false
+        }
+    });
+
+    $scope.centerJSON = function() {
+            leafletData.getMap().then(function(map) {
+                var latlngs = [];
+                for (var i in $scope.geojson.data.features[0].geometry.coordinates) {
+                    var coord = $scope.geojson.data.features[0].geometry.coordinates[i];
+                    for (var j in coord) {
+                        var points = coord[j];
+                        for (var k in points) {
+                            latlngs.push(L.GeoJSON.coordsToLatLng(points[k]));
+                        }
+                    }
+                }
+                map.fitBounds(latlngs);
+            });
+        };
+
+        //$timeout(function() {$scope.centerJSON();}, 1400); 
+
+        // Get the countries geojson data from a JSON
+        $scope.da = function(layer, field, code){
+        $http.get('http://localhost:8080/geoserver/hms/ows?'+
+            'service=WFS&version=1.0.0'+
+            '&request=GetFeature'+
+            '&typeName='+layer+
+            '&CQL_FILTER='+field+'=%27'+code+'%27'+
+            '&outputFormat=application%2Fjson')
+        .then(function(data, status) {
+            angular.extend($scope, {
+                geojson: {
+                    data: data.data,
+                    style: {
+                        fillColor: "red",
+                        weight: 2,
+                        opacity: 1,
+                        color: 'white',
+                        dashArray: '3',
+                        fillOpacity: 0.7
+                    }
+                }
+            });
+        });
+
+        $timeout(function() { 
+            $scope.centerJSON(); 
+            console.log($scope.geojson);
+        }, 1400); 
+
+       // $scope.centerJSON();
+};
 
     //var caseProv = [];
-
     $scope.loadCaseProv = function(place, code) {
         var caseProv = [];
         chartService.getCase(place, code)
             .then(function(data) {
+
+                if (place == 'province') {
+                    $scope.provName = data.data[0].prov_name;
+                    //console.log(data.data[0].prov_name);
+                    $scope.da('hms:pro_dhf', 'prov_code', code);
+
+                } else if (place == 'amphoe') {
+                    $scope.ampName = data.data[0].amp_name;  
+                    $scope.da('hms:amp_dhf', 'amp_code', code);
+
+
+                } else if (place == 'tambon') {
+                    $scope.tamName = data.data[0].tam_name;
+                    $scope.da('hms:tam_dhf', 'tam_code', code);
+
+                } else if (place == 'village') {
+                    $scope.villName = data.data[0].vill_name;
+
+                    $scope.da('hms:vill_dhf', 'vill_code', code);
+
+                }
+
                 for (var prop in data.data[0]) {
                     for (var i = 49; i <= 59; i++) {
                         var c = 'case' + i;
@@ -403,17 +482,17 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                         }
                     }
                 }
-                
+
                 var scopeName = {
                     title: {
-                        text: 'ทดสอบ',
-                        subtext: 'test'
+                        text: '',
+                        subtext: 'จำนวนผู้ป่วย'
                     },
                     tooltip: {
                         trigger: 'axis'
                     },
                     legend: {
-                        data: ['aaa']
+                        data: ['จำนวนผู้ป่วย']
                     },
                     toolbox: {
                         show: false,
@@ -438,7 +517,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                         }
                     }],
                     series: [{
-                        name: 'aaa',
+                        name: 'จำนวนผู้ป่วย',
                         type: 'line',
                         smooth: true,
                         data: caseProv,
@@ -456,16 +535,16 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                     }]
                 };
 
-                if(place=='province'){
+                if (place == 'province') {
                     $scope.lineOptionP = scopeName;
-                }else if(place=='amphoe'){
+                } else if (place == 'amphoe') {
                     $scope.lineOptionA = scopeName;
-                }else if(place=='tambon'){
+                } else if (place == 'tambon') {
                     $scope.lineOptionT = scopeName;
-                }else if(place=='village'){
+                } else if (place == 'village') {
                     $scope.lineOptionV = scopeName;
                 }
-                
+
             })
     };
 
@@ -484,7 +563,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
 
     //$scope.lineOption = echartService.lineOption;
 
-   
+
     //end chart
 
 })
