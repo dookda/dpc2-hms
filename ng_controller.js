@@ -1,9 +1,11 @@
+var url = "http://103.40.148.133";
+//var url = "http://localhost:8080/geoserver/hms/wms?";
+
 angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
     .controller("mapController", function ($scope, $rootScope, leafletMapEvents,
         $http, $filter, $timeout, $interval, dengueService, placeService, leafletData) {
 
         $scope.center = dengueService.selectedLocation;
-
 
         if ($scope.center.lat == null) {
             //console.log('yess null');
@@ -20,8 +22,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
             };
             //console.log($scope.center.lat + '-' + $scope.center.lng);
         }
-        //var url = "http://103.40.148.133/";
-        var url = "http://localhost:8080/geoserver/hms/wms?";
+
         $scope.title = 'map';
         angular.extend($scope, {
             center: center,
@@ -63,7 +64,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                         name: 'province',
                         type: 'wms',
                         visible: true,
-                        url: url,
+                        url: url+':8080/geoserver/hms/wms?',
                         layerParams: {
                             layers: 'hms:pro_dhf',
                             format: 'image/png',
@@ -75,7 +76,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                         name: 'amphoe',
                         type: 'wms',
                         visible: true,
-                        url: url,
+                        url: url+':8080/geoserver/hms/wms?',
                         layerParams: {
                             layers: 'hms:amp_dhf',
                             format: 'image/png',
@@ -87,7 +88,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                         name: 'tambon',
                         type: 'wms',
                         visible: true,
-                        url: url,
+                        url: url+':8080/geoserver/hms/wms?',
                         layerParams: {
                             layers: 'hms:tam_dhf',
                             format: 'image/png',
@@ -100,7 +101,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                         name: 'v_dengue_buffer',
                         type: 'wms',
                         visible: false,
-                        url: url,
+                        url: url+':8080/geoserver/hms/wms?',
                         layerParams: {
                             layers: 'hms:v_dengue_buffer',
                             format: 'image/png',
@@ -114,7 +115,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
                         name: 'village',
                         type: 'wms',
                         visible: false,
-                        url: url,
+                        url: url+':8080/geoserver/hms/wms?',
                         layerParams: {
                             layers: 'hms:vill_dhf',
                             format: 'image/png',
@@ -285,7 +286,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
         // insert data 
         $scope.insertMarker = function () {
 
-            var link = 'http://localhost/hms/case_insert.php';
+            var link = url+'/hms/case_insert.php';
             //$http.post(link, {username : $scope.data.farmer_fname})
             $http.post(link, $scope.dat)
                 .then(function (res) {
@@ -414,7 +415,7 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
 
         // Get the countries geojson data from a JSON
         $scope.da = function (layer, field, code) {
-            $http.get('http://localhost:8080/geoserver/hms/ows?' +
+            $http.get(url+':8080/geoserver/hms/ows?' +
                 'service=WFS&version=1.0.0' +
                 '&request=GetFeature' +
                 '&typeName=' + layer +
@@ -576,19 +577,21 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
 
     })
 
-    .controller("formdocController", function ($scope, $http, $filter) {
-        $scope.title = 'form for .docx';
+    .controller("formdocController", function ($scope, $http, $filter,dengueService) {
+        $scope.title = 'form for .docx';  
+        $scope.address = dengueService.selectedReport;             
 
-               
+        console.log($scope.address);
 
         $scope.getDt = function () {
             $scope.dt={
+                add: $scope.address,
                 dd: $filter('date')($scope.dd, 'dd/MM/yyyy'),
                 tstart: $filter('date')($scope.tstart, 'HH:mm'),
                 tend: $filter('date')($scope.tend, 'HH:mm')
             }
 
-            var link = 'http://localhost/hms/case_writedoc.php';
+            var link = url+'/hms/case_writedoc.php';
             $http.post(link, $scope.dt)
                 .then(function (res) {
                     $scope.res = res.data.data[0];
@@ -600,6 +603,9 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
 
     .controller('reportController', function ($scope, $http, dengueService) {
         $scope.title = 'report';
+
+        
+
         $scope.loadDenguePoint = function () {
             dengueService.loadDenguePoint()
                 //$http.get('http://localhost/hms-api/index.php/denguepoint')
@@ -611,11 +617,16 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
         };
         $scope.loadDenguePoint();
 
+        $scope.openFormdoc = function(vill, tam, amp, prov){
+            dengueService.selectedReport = vill+' '+tam+' '+amp+' '+prov; 
+            //console.log(vill+' '+tam+' '+amp+' '+prov);
+        }
+
         $scope.delete = function (item) {
             //console.log(item);
             $scope.dengues.splice($scope.dengues.indexOf(item), 1);
 
-            var link = 'http://localhost/hms/case_remove.php';
+            var link = url+'/hms/case_remove.php';
             $http.post(link, item)
                 .then(function (res) {
                     $scope.response = res.data;

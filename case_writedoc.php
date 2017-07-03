@@ -3,7 +3,7 @@
 $postdata = file_get_contents("php://input");
 if (isset($postdata)) {
     $request = json_decode($postdata);
-
+    $add = $request->add;
     $dd = $request->dd;
     $tstart = $request->tstart;
     $tend = $request->tend;
@@ -31,6 +31,7 @@ if (isset($postdata)) {
 						
 			$timestamp = date('Y-m-d H:i:s');
 			
+            $message = str_replace("address", $add, $message);
 			$message = str_replace("dd", $dd, $message);
 			$message = str_replace("tstart", $tstart, $message);
 			$message = str_replace("tend", $tend, $message);
