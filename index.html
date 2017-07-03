@@ -48,19 +48,30 @@
     <!-- leaflet -->
     <link rel="stylesheet" href="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
     <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+
     <!-- app -->
     <script src="ng_app.js"></script>
     <script src="ng_controller.js"></script>
     <script src="ng_service.js"></script>
     
 </head>
+<style>
+body {
+font-family: 'Prompt', sans-serif;
+}
+
+h2 {
+  font-family: 'Prompt', Tahoma, Serif;
+}
+</style>
 
 <body class='main page'>
     <!-- Navbar -->
     <div class='navbar navbar-default' id='navbar'>
-        <a class='navbar-brand' href='#'>
-            <i class='icon-beer'></i> Health Monitoring and Surveillance System (HMS)
-        </a>
+        <h2>
+            ระบบติดตามและเฝ้าระวังภัยสุขภาพ (Health Monitoring and Surveillance System: HMS)
+        </h2>
         <ul class='nav navbar-nav pull-right'>
             <li class='dropdown user'>
                 <a class='dropdown-toggle' data-toggle='dropdown' href='#'>

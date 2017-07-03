@@ -21,5 +21,10 @@ angular.module('app', ['ngRoute','app.service','app.controller'])
     controller  : 'formController'
   })
 
+  .when('/formdoc', {
+    templateUrl : 'formdoc.html',
+    controller  : 'formdocController'
+  })
+
   .otherwise({redirectTo: '/map'});
 })
