@@ -577,6 +577,11 @@ angular.module('app.controller', ['ui-leaflet', 'ng-echarts'])
 
     })
 
+    .controller("chemController", function ($scope) {
+        $scope.title = 'คำนวนสารเคมี';
+
+    })
+
     .controller("formdocController", function ($scope, $http, $filter,dengueService) {
         $scope.title = 'form for .docx';  
         $scope.address = dengueService.selectedReport;             

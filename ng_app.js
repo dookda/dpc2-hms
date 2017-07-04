@@ -26,5 +26,10 @@ angular.module('app', ['ngRoute','app.service','app.controller'])
     controller  : 'formdocController'
   })
 
+  .when('/chem', {
+    templateUrl : 'chem.html',
+    controller  : 'chemController'
+  })
+
   .otherwise({redirectTo: '/map'});
 })

@@ -65,13 +65,13 @@
                 <td class="text-center" colspan="2">{{d.date_sick}}</td>
                 <td class="text-center" colspan="2">{{d.token}}</td>
                 <td class="text-center" colspan="2">
-                    <a class='btn btn-success' data-toggle='tooltip' title='Zoom' ng-click="goMap(d.lat,d.lng)" href='#!/map'>
+                    <a class='btn btn-success' data-toggle='tooltip' title='ตำแหน่งบนแผนที่' href='#!/map' ng-click="goMap(d.lat,d.lng)">
                         <i class='icon-zoom-in'></i>
                     </a>
-                    <a class='btn btn-info' href='#!/formdoc' ng-click="openFormdoc(d.vill_name,d.tam_name,d.amp_name,d.prov_name)">
+                    <a class='btn btn-info' data-toggle='tooltip' title='สร้างใบประกาศฉีดพ่น' href='#!/formdoc' ng-click="openFormdoc(d.vill_name,d.tam_name,d.amp_name,d.prov_name)">
                         <i class='icon-edit'></i>
                     </a>
-                    <a class='btn btn-danger' href='' ng-click="delete(d)">
+                    <a class='btn btn-danger'  data-toggle='tooltip' title='ลบ' href='' ng-click="delete(d)">
                         <i class='icon-trash'></i>
                     </a>
                 </td>
